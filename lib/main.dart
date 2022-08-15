@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
         '/category-meal': (context) => const CategoryMealsScreen(),
         '/meal-detail': (context) => const MealDetailScreen(),
       },
+      onGenerateRoute:(settings) => MaterialPageRoute(builder:(context) => CategoriesScreen(),),
     );
   }
 }
