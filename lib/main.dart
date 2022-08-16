@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:meals_app/dummy_data.dart';
+import 'package:meals_app/models/meal.dart';
 import 'package:meals_app/screens/categories_screen.dart';
 import 'package:meals_app/screens/category_meals_screen.dart';
 import 'package:meals_app/screens/filters_screen.dart';
@@ -7,8 +9,43 @@ import 'package:meals_app/screens/tabs_screen.dart';
 
 void main() => runApp(const MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Map<String, bool> _filters = {
+    'gluten': false,
+    'lactose': false,
+    'vegan': false,
+    'vegeterian': false,
+  };
+
+  List<Meal> _availableMeals = dummyMeals;
+
+  void _setFilters(Map<String, bool> filterData) {
+    setState(() {
+      _filters = filterData;
+      _availableMeals = dummyMeals.where((element) {
+        if (_filters['gluten']! && !element.isGlutenFree) {
+          return false;
+        }
+        if (_filters['lactose']! && !element.isLactoseFree) {
+          return false;
+        }
+        if (_filters['vegan']! && !element.isVegan) {
+          return false;
+        }
+        if (_filters['vegeterian']! && !element.isVegetarian) {
+          return false;
+        }
+        return true;
+      }).toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +56,7 @@ class MyApp extends StatelessWidget {
           colorScheme:
               ColorScheme.fromSwatch(primarySwatch: Colors.pink).copyWith(
             secondary: Colors.amber,
-          ),          
+          ),
           fontFamily: 'Raleway',
           textTheme: ThemeData.light().textTheme.copyWith(
                 bodyText1:
@@ -33,9 +70,11 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => TabsScreen(),
-        '/category-meal': (context) => const CategoryMealsScreen(),
+        '/category-meal': (context) =>
+            CategoryMealsScreen(availableMeal: _availableMeals),
         '/meal-detail': (context) => const MealDetailScreen(),
-        '/filters':(context) => const FiltersScreen(),
+        '/filters': (context) =>
+            FiltersScreen(saveFilters: _setFilters, currentFilters: _filters),
       },
       onGenerateRoute: (settings) => MaterialPageRoute(
         builder: (context) => const CategoriesScreen(),
