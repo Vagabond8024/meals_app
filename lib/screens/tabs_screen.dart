@@ -1,22 +1,33 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:meals_app/models/meal.dart';
 import 'package:meals_app/screens/categories_screen.dart';
 import 'package:meals_app/screens/favorires_screen.dart';
 import 'package:meals_app/screens/views/main_drawer.dart';
 
 class TabsScreen extends StatefulWidget {
-  TabsScreen({Key? key}) : super(key: key);
+  final List<Meal> favoriteMeals;
+  TabsScreen({Key? key, required this.favoriteMeals}) : super(key: key);
 
   @override
   State<TabsScreen> createState() => _TabsScreenState();
 }
 
 class _TabsScreenState extends State<TabsScreen> {
-  final List<Map<String, Object>> _pages = [
-    {'page': CategoriesScreen(), 'title': 'Categories'},
-    {'page': FavoritesScreen(), 'title': 'Favorites'},
-  ];
+  late List<Map<String, Object>> _pages;
+
+  @override
+  void initState() {
+    _pages = [
+      {'page': CategoriesScreen(), 'title': 'Categories'},
+      {
+        'page': FavoritesScreen(favoriteMeals: widget.favoriteMeals),
+        'title': 'Favorites'
+      },
+    ];
+    super.initState();
+  }
 
   int _selectedPageIndex = 0;
 

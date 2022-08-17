@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:meals_app/dummy_data.dart';
 import 'package:meals_app/models/meal.dart';
@@ -25,6 +27,7 @@ class _MyAppState extends State<MyApp> {
   };
 
   List<Meal> _availableMeals = dummyMeals;
+  List<Meal> _favoriteMeals = [];
 
   void _setFilters(Map<String, bool> filterData) {
     setState(() {
@@ -45,6 +48,25 @@ class _MyAppState extends State<MyApp> {
         return true;
       }).toList();
     });
+  }
+
+  void _toggleFavorite(String mealId) {
+    final existingIndex =
+        _favoriteMeals.indexWhere((element) => element.id == mealId);
+    if (existingIndex >= 0) {
+      setState(() {
+        _favoriteMeals.removeAt(existingIndex);
+      });
+    } else {
+      setState(() {
+        _favoriteMeals
+            .add(dummyMeals.firstWhere((element) => element.id == mealId));
+      });
+    }
+  }
+
+  bool _isMealFavorite(String id) {
+    return _favoriteMeals.any((element) => element.id == id);
   }
 
   @override
@@ -69,10 +91,11 @@ class _MyAppState extends State<MyApp> {
               )),
       initialRoute: '/',
       routes: {
-        '/': (context) => TabsScreen(),
+        '/': (context) => TabsScreen(favoriteMeals: _favoriteMeals),
         '/category-meal': (context) =>
             CategoryMealsScreen(availableMeal: _availableMeals),
-        '/meal-detail': (context) => const MealDetailScreen(),
+        '/meal-detail': (context) => MealDetailScreen(
+            toggleFavorite: _toggleFavorite, isFavorite: _isMealFavorite),
         '/filters': (context) =>
             FiltersScreen(saveFilters: _setFilters, currentFilters: _filters),
       },
