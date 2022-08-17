@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:meals_app/screens/views/main_drawer.dart';
-import 'package:meals_app/main.dart';
 
 class FiltersScreen extends StatefulWidget {
   final Function saveFilters;
@@ -33,8 +32,8 @@ class _FiltersScreenState extends State<FiltersScreen> {
     final void Function(bool)? updateValue,
   ) {
     return SwitchListTile(
-      title: Text('$title'),
-      subtitle: Text('$description'),
+      title: Text(title),
+      subtitle: Text(description),
       value: currentValue,
       onChanged: updateValue,
     );
@@ -44,7 +43,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Filters'),
+          title: const Text('Filters'),
           actions: [
             IconButton(
                 onPressed: () {
@@ -56,14 +55,14 @@ class _FiltersScreenState extends State<FiltersScreen> {
                   };
                   widget.saveFilters(seelectedFilters);
                 },
-                icon: Icon(Icons.save))
+                icon: const Icon(Icons.save))
           ],
         ),
-        drawer: MainDrawer(),
+        drawer: const MainDrawer(),
         body: Column(
           children: [
             Container(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Text(
                 'Adjust your meal selection',
                 style: Theme.of(context).textTheme.titleLarge,
