@@ -10,7 +10,7 @@ class FavoritesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (favoriteMeals.isEmpty) {
-      return Center(
+      return const Center(
         child: Text('No favorites yet'),
       );
     } else {

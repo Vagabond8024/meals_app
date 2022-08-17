@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:meals_app/dummy_data.dart';
 import 'package:meals_app/models/meal.dart';
@@ -27,7 +25,7 @@ class _MyAppState extends State<MyApp> {
   };
 
   List<Meal> _availableMeals = dummyMeals;
-  List<Meal> _favoriteMeals = [];
+  final List<Meal> _favoriteMeals = [];
 
   void _setFilters(Map<String, bool> filterData) {
     setState(() {
